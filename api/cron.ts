@@ -143,13 +143,12 @@ class AwServer {
   }
 }
 
-// Usage example:
-const sshConfig = {
-  host: process.env.SSH_HOST ?? '',
-  port: parseInt(process.env.SSH_PORT ?? '22', 10),
-  username: process.env.SSH_USER ?? 'ubuntu',
-  privateKey: fs.readFileSync('/home/jingyi/PycharmProjects/data-pipe/secrets/instance-alpha.pem'),
-};
+// const sshConfig = {
+//   host: process.env.SSH_HOST ?? '',
+//   port: parseInt(process.env.SSH_PORT ?? '22', 10),
+//   username: process.env.SSH_USER ?? 'ubuntu',
+//   privateKey: fs.readFileSync('/home/jingyi/PycharmProjects/data-pipe/secrets/instance-alpha.pem'),
+// };
 
 // awServerPipeline
 //   .extract('CURRENT_TIMESTAMP', {
