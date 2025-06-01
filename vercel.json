@@ -1,0 +1,15 @@
+{
+  "crons": [{
+    "path": "/api/cron",
+    "schedule": "*/1 * * * *"
+  }],
+  "env": {
+    "CRON_SECRET": "@cron_secret",
+    "SSH_HOST": "@ssh_host",
+    "SSH_PORT": "@ssh_port",
+    "SSH_USER": "@ssh_user",
+    "SSH_PRIVATE_KEY": "@ssh_private_key",
+    "REMOTE_DB_PATH": "@remote_db_path",
+    "DATABASE_URL": "@database_url"
+  }
+}

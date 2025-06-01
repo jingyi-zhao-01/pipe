@@ -1,0 +1,41 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["multiSchema"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+  schemas  = ["activitywatch", "public"]
+}
+
+model Buckets {
+  id              Int     @id @default(autoincrement())
+  name            String  @unique
+  type            String
+  client          String
+  hostname        String
+  created         String
+  data_deprecated String? @default("{}")
+  data            String  @default("{}")
+
+  @@unique([id, name])
+  @@index([id])
+  @@map("buckets")
+  @@schema("activitywatch")
+}
+
+model Events {
+  id        Int     @id @default(autoincrement())
+  bucketrow Int
+  starttime BigInt
+  endtime   BigInt
+  app       String
+  title     String
+  status    String? @default("")
+
+  @@unique([id, bucketrow, starttime, endtime])
+  @@index([endtime, starttime, bucketrow])
+  @@map("events")
+  @@schema("activitywatch")
+}
