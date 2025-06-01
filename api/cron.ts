@@ -95,7 +95,7 @@ class AwServer {
 
   async fetchEventsByCurrentCutOff(): Promise<Event[]> {
     await this.connect();
-    const starttimems = Date.now() - 60000;
+    const starttimems = Date.now();
     const starttimenano = `${starttimems}000000`; // Convert milliseconds to nanoseconds
     const query = `SELECT id, bucketrow, starttime, endtime, data
         FROM events 
@@ -105,8 +105,20 @@ class AwServer {
     return this.executeRemoteQuery<Event>(query);
   }
 
+  async fetchEventsByPresetTimestamp(presetTimestampMs: string): Promise<Event[]> {
+    await this.connect();
+    const ns = `${presetTimestampMs}000000`; // Convert milliseconds to nanoseconds
+
+    const query = `SELECT id, bucketrow, starttime, endtime, data
+        FROM events 
+        WHERE starttime > ${ns} OR 
+              (starttime <= ${ns} AND endtime > ${ns})
+        ORDER BY starttime ASC`;
+    return this.executeRemoteQuery<Event>(query);
+  }
+
   async extract(
-    options: 'ALL' | 'CURRENT_TIMESTAMP' | 'PRESET_TIMESTAMP',
+    options: 'ALL' | 'CURRENT_TIMESTAMP' | 'PRESET_TIMESTAMP' | 'TEST',
     callbacks: {
       onBuckets?: (buckets: Bucket[]) => void;
       onEvents?: (events: Event[]) => void;
@@ -128,6 +140,10 @@ class AwServer {
         events = await this.fetchEventsByCurrentCutOff();
       } else if (options === 'PRESET_TIMESTAMP') {
         throw new Error('PRESET_TIMESTAMP option is not implemented yet.');
+      } else if (options === 'TEST') {
+        events = await this.fetchTopEvents(10); // Example timestamp
+      } else {
+        throw new Error(`Unknown option: ${options}`);
       }
       if (callbacks.onEvents) {
         callbacks.onEvents(events);
@@ -194,7 +210,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     const awServerPipeline = new AwServer(sshConfig, process.env.REMOTE_DB_PATH!);
 
-    await awServerPipeline.extract('CURRENT_TIMESTAMP', {
+    await awServerPipeline.extract('TEST', {
       onBuckets: async buckets => {
         logger.info('Processing buckets', { count: buckets.length });
         await loadBuckets(buckets);

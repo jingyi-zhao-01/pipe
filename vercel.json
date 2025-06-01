@@ -1,9 +1,9 @@
 {
   "crons": [{
     "path": "/api/cron",
-    "schedule": "*/1 * * * *"
+    "schedule": "0 0 * * *"
   }],
-  "env": {
+    "env": {
     "CRON_SECRET": "@cron_secret",
     "SSH_HOST": "@ssh_host",
     "SSH_PORT": "@ssh_port",
