@@ -2,7 +2,7 @@ import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
-interface Event {
+interface AwEvent {
   id: number;
   bucketrow: number;
   starttime: bigint;
@@ -10,7 +10,7 @@ interface Event {
   data: string;
 }
 
-interface Bucket {
+interface AwBucket {
   id: number;
   name: string;
   type: string;
@@ -20,7 +20,7 @@ interface Bucket {
   data_deprecated: string;
   data: string;
 }
-const loadEvents = async (events: Event[]): Promise<void> => {
+const loadEvents = async (events: AwEvent[]): Promise<void> => {
   try {
     await prisma.events.createMany({
       data: events.map(event => ({
@@ -39,7 +39,7 @@ const loadEvents = async (events: Event[]): Promise<void> => {
   }
 };
 
-const loadBuckets = async (buckets: Bucket[]): Promise<void> => {
+const loadBuckets = async (buckets: AwBucket[]): Promise<void> => {
   try {
     await prisma.buckets.createMany({
       data: buckets.map(bucket => ({
@@ -65,4 +65,4 @@ export {
   loadBuckets,
   prisma as dbClient, // Export the Prisma client for use in other modules
 };
-export type { Event, Bucket }; // Export types for use in other modules
+export type { AwEvent, AwBucket }; // Export types for use in other modules
