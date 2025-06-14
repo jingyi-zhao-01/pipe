@@ -14,13 +14,12 @@
     "prisma:studio": "npx prisma studio",
     "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md}\"",
     "format:check": "prettier --check \"**/*.{ts,tsx,js,jsx,json,md}\""
-
-
   },
   "type": "module",
   "dependencies": {
     "@prisma/client": "^6.8.2",
     "dotenv": "^16.5.0",
+    "fs-extra": "^11.3.0",
     "next": "15.3.3",
     "node-cron": "^4.1.0",
     "react": "^19.0.0",
